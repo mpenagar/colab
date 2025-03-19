@@ -23,9 +23,9 @@ def get_strategy():
     return tf.distribute.TPUStrategy(tpu)
   else :
     print('Not connected to a TPU runtime')
-    gpu_info = !nvidia-smi --query-gpu=name --format=csv,noheader 2> /dev/null
-    if gpu_info:
-      print('Running on a GPU:',*gpu_info)
+    gpu = detect_gpu()
+    if gpu:
+      print('Running on a GPU:',*gpu)
     else :
       print('Not connected to a GPU runtime')
     return tf.distribute.get_strategy()
