@@ -12,7 +12,7 @@ def detect_gpu():
       out = subprocess.check_output('nvidia-smi --query-gpu=name --format=csv,noheader'.split())
       return out.decode('utf-8').strip().split('\n')
   except Exception: # this command not being found can raise quite a few different errors depending on the configuration
-      return []
+      return None
  
 def get_strategy():
   tpu = detect_tpu()
