@@ -1,4 +1,5 @@
 import tensorflow as tf
+import subprocess
 
 def detect_tpu():
   try:
@@ -7,9 +8,12 @@ def detect_tpu():
     return None
 
 def detect_gpu():
-  gpu = !nvidia-smi --query-gpu=name --format=csv,noheader 2> /dev/null
-  return list(gpu)
-
+  try:
+      out = subprocess.check_output('nvidia-smi --query-gpu=name --format=csv,noheader'.split())
+      return out.decode('utf-8').strip().split('\n')
+  except Exception: # this command not being found can raise quite a few different errors depending on the configuration
+      return []
+ 
 def get_strategy():
   tpu = detect_tpu()
   if tpu :
